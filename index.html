@@ -3,7 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0d17">
+    <meta name="description" content="Play XO Arena, a modern Tic Tac Toe game with two-player and AI modes.">
     <title>XO Arena | Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -24,7 +26,6 @@
             </div>
         </header>
 
-
         <!-- TOP CONTROLS -->
         <section class="top-section">
 
@@ -32,39 +33,33 @@
                 <p class="section-label">GAME MODE</p>
 
                 <div class="mode-buttons">
-                    <button class="mode-btn active" id="twoPlayerBtn">
+                    <button class="mode-btn active" id="twoPlayerBtn" type="button">
                         👥 Two Players
                     </button>
 
-                    <button class="mode-btn" id="computerBtn">
+                    <button class="mode-btn" id="computerBtn" type="button">
                         🤖 Vs Computer
                     </button>
                 </div>
             </div>
 
-
             <div class="difficulty-section" id="difficultySection">
-
                 <p class="section-label">AI DIFFICULTY</p>
 
                 <div class="difficulty-buttons">
-
-                    <button class="difficulty-btn active" data-level="easy">
+                    <button class="difficulty-btn active" data-level="easy" type="button">
                         Easy
                     </button>
 
-                    <button class="difficulty-btn" data-level="medium">
+                    <button class="difficulty-btn" data-level="medium" type="button">
                         Medium
                     </button>
 
-                    <button class="difficulty-btn" data-level="impossible">
+                    <button class="difficulty-btn" data-level="impossible" type="button">
                         Impossible
                     </button>
-
                 </div>
-
             </div>
-
 
             <!-- SCOREBOARD -->
             <div class="scoreboard">
@@ -88,15 +83,12 @@
                 </div>
 
             </div>
-
         </section>
-
 
         <!-- MAIN GAME AREA -->
         <section class="main-layout">
 
-
-            <!-- LEFT: GAME BOARD -->
+            <!-- GAME BOARD -->
             <div class="board-panel">
 
                 <div class="panel-heading">
@@ -105,43 +97,37 @@
                         <h2>Game Board</h2>
                     </div>
 
-                    <span class="round-label" id="roundLabel">
-                        ROUND 01
-                    </span>
+                    <span class="round-label" id="roundLabel">ROUND 01</span>
                 </div>
-
 
                 <div class="game-info">
                     <div class="status-indicator"></div>
-                    <p id="gameStatus">Player X's Turn</p>
+                    <p id="gameStatus" aria-live="polite">Player X's Turn</p>
                 </div>
 
+                <div class="game-board" id="gameBoard" role="group" aria-label="Tic Tac Toe game board">
 
-                <div class="game-board" id="gameBoard">
+                    <button class="cell" data-index="0" type="button" aria-label="Cell 1"></button>
+                    <button class="cell" data-index="1" type="button" aria-label="Cell 2"></button>
+                    <button class="cell" data-index="2" type="button" aria-label="Cell 3"></button>
 
-                    <button class="cell" data-index="0" aria-label="Cell 1"></button>
-                    <button class="cell" data-index="1" aria-label="Cell 2"></button>
-                    <button class="cell" data-index="2" aria-label="Cell 3"></button>
+                    <button class="cell" data-index="3" type="button" aria-label="Cell 4"></button>
+                    <button class="cell" data-index="4" type="button" aria-label="Cell 5"></button>
+                    <button class="cell" data-index="5" type="button" aria-label="Cell 6"></button>
 
-                    <button class="cell" data-index="3" aria-label="Cell 4"></button>
-                    <button class="cell" data-index="4" aria-label="Cell 5"></button>
-                    <button class="cell" data-index="5" aria-label="Cell 6"></button>
-
-                    <button class="cell" data-index="6" aria-label="Cell 7"></button>
-                    <button class="cell" data-index="7" aria-label="Cell 8"></button>
-                    <button class="cell" data-index="8" aria-label="Cell 9"></button>
+                    <button class="cell" data-index="6" type="button" aria-label="Cell 7"></button>
+                    <button class="cell" data-index="7" type="button" aria-label="Cell 8"></button>
+                    <button class="cell" data-index="8" type="button" aria-label="Cell 9"></button>
 
                 </div>
 
-
-                <div class="game-message" id="gameMessage">
+                <div class="game-message" id="gameMessage" aria-live="polite">
                     Make your move and win the battle!
                 </div>
 
             </div>
 
-
-            <!-- RIGHT: GAME INFORMATION -->
+            <!-- GAME INFORMATION -->
             <aside class="info-panel">
 
                 <div class="info-heading">
@@ -149,10 +135,8 @@
                     <h2>Match Information</h2>
                 </div>
 
-
                 <!-- CURRENT TURN -->
                 <div class="info-card turn-card">
-
                     <span class="info-label">CURRENT TURN</span>
 
                     <div class="turn-content">
@@ -163,13 +147,10 @@
                             <p id="turnDescription">Waiting for your move</p>
                         </div>
                     </div>
-
                 </div>
 
-
-                <!-- RESULT -->
-                <div class="info-card">
-
+                <!-- LAST RESULT -->
+                <div class="info-card result-card">
                     <span class="info-label">LAST RESULT</span>
 
                     <h3 id="resultInfo">No result yet</h3>
@@ -177,13 +158,10 @@
                     <p class="info-description" id="resultDescription">
                         Complete a match to see its result here.
                     </p>
-
                 </div>
 
-
                 <!-- MATCH DETAILS -->
-                <div class="info-card">
-
+                <div class="info-card details-card">
                     <span class="info-label">MATCH DETAILS</span>
 
                     <div class="detail-row">
@@ -200,13 +178,10 @@
                         <span>Moves Played</span>
                         <strong id="movesInfo">0 / 9</strong>
                     </div>
-
                 </div>
-
 
                 <!-- HOW TO PLAY -->
                 <div class="info-card rules-card">
-
                     <span class="info-label">HOW TO PLAY</span>
 
                     <p>
@@ -219,32 +194,25 @@
                         <span>vs</span>
                         <span class="guide-o">O</span>
                     </div>
-
                 </div>
-
 
                 <!-- ACTIONS -->
                 <div class="game-actions">
-
-                    <button class="restart-btn" id="restartBtn">
+                    <button class="restart-btn" id="restartBtn" type="button">
                         ↻ Restart Game
                     </button>
 
-                    <button class="reset-btn" id="resetScoreBtn">
+                    <button class="reset-btn" id="resetScoreBtn" type="button">
                         Reset Scores
                     </button>
-
                 </div>
 
-
-                <button class="sound-btn" id="soundBtn">
+                <button class="sound-btn" id="soundBtn" type="button">
                     🔊 Sound On
                 </button>
 
             </aside>
-
         </section>
-
 
         <!-- FOOTER -->
         <footer>
@@ -253,7 +221,6 @@
         </footer>
 
     </main>
-
 
     <div class="confetti-container" id="confettiContainer"></div>
 

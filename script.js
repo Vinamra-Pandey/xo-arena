@@ -1,5 +1,7 @@
 
+// ==========================================
 // GET HTML ELEMENTS
+// ==========================================
 
 const cells = document.querySelectorAll(".cell");
 
@@ -38,7 +40,9 @@ const movesInfo = document.getElementById("movesInfo");
 const roundLabel = document.getElementById("roundLabel");
 
 
+// ==========================================
 // GAME VARIABLES
+// ==========================================
 
 let board = ["", "", "", "", "", "", "", "", ""];
 
@@ -60,6 +64,8 @@ let roundNumber = 1;
 
 let lastResult = "No result yet";
 
+let computerTimer = null;
+
 let scores = {
     X: 0,
     O: 0,
@@ -67,7 +73,9 @@ let scores = {
 };
 
 
+// ==========================================
 // WINNING COMBINATIONS
+// ==========================================
 
 const winningCombinations = [
     [0, 1, 2],
@@ -83,7 +91,9 @@ const winningCombinations = [
 ];
 
 
+// ==========================================
 // SOUND SYSTEM
+// ==========================================
 
 function playTone(frequency, duration, type = "sine", volume = 0.12) {
 
@@ -144,7 +154,9 @@ function playTone(frequency, duration, type = "sine", volume = 0.12) {
 }
 
 
+// ==========================================
 // PLAY GAME SOUNDS
+// ==========================================
 
 function playSound(type) {
 
@@ -179,7 +191,9 @@ function playSound(type) {
 }
 
 
+// ==========================================
 // CONFETTI CELEBRATION
+// ==========================================
 
 function celebrateWin() {
 
@@ -223,7 +237,9 @@ function celebrateWin() {
 }
 
 
+// ==========================================
 // CHECK WINNER
+// ==========================================
 
 function checkWinner(currentBoard) {
 
@@ -248,7 +264,9 @@ function checkWinner(currentBoard) {
 }
 
 
+// ==========================================
 // CHECK DRAW
+// ==========================================
 
 function checkDraw(currentBoard) {
 
@@ -257,7 +275,9 @@ function checkDraw(currentBoard) {
 }
 
 
+// ==========================================
 // UPDATE GAME INFORMATION
+// ==========================================
 
 function updateInformation() {
 
@@ -328,7 +348,9 @@ function updateInformation() {
 }
 
 
+// ==========================================
 // UPDATE STATUS
+// ==========================================
 
 function updateStatus() {
 
@@ -353,7 +375,9 @@ function updateStatus() {
 }
 
 
+// ==========================================
 // UPDATE SCOREBOARD
+// ==========================================
 
 function updateScores() {
 
@@ -366,11 +390,15 @@ function updateScores() {
 }
 
 
+// ==========================================
 // MAKE A MOVE
+// ==========================================
 
 function makeMove(index) {
 
     if (
+        index < 0 ||
+        index > 8 ||
         board[index] !== "" ||
         gameOver ||
         isThinking
@@ -389,6 +417,11 @@ function makeMove(index) {
     );
 
     cells[index].disabled = true;
+
+    cells[index].setAttribute(
+        "aria-label",
+        `Cell ${index + 1}, ${currentPlayer}`
+    );
 
     playSound("move");
 
@@ -434,7 +467,9 @@ function makeMove(index) {
 
         updateInformation();
 
-        setTimeout(() => {
+        computerTimer = setTimeout(() => {
+
+            computerTimer = null;
 
             computerMove();
 
@@ -456,7 +491,9 @@ function makeMove(index) {
 }
 
 
+// ==========================================
 // END GAME
+// ==========================================
 
 function endGame(result, winningLine = []) {
 
@@ -546,7 +583,9 @@ function endGame(result, winningLine = []) {
 }
 
 
+// ==========================================
 // MINIMAX ALGORITHM
+// ==========================================
 
 function minimax(currentBoard, depth, isMaximizing) {
 
@@ -635,7 +674,9 @@ function minimax(currentBoard, depth, isMaximizing) {
 }
 
 
+// ==========================================
 // RANDOM COMPUTER MOVE
+// ==========================================
 
 function getRandomMove() {
 
@@ -662,7 +703,9 @@ function getRandomMove() {
 }
 
 
+// ==========================================
 // BEST COMPUTER MOVE
+// ==========================================
 
 function getBestMove() {
 
@@ -709,7 +752,9 @@ function getBestMove() {
 }
 
 
+// ==========================================
 // MEDIUM DIFFICULTY
+// ==========================================
 
 function getMediumMove() {
 
@@ -724,11 +769,15 @@ function getMediumMove() {
 }
 
 
+// ==========================================
 // COMPUTER MOVE
+// ==========================================
 
 function computerMove() {
 
-    if (gameOver) return;
+    if (gameOver || !isComputer || !isThinking) {
+        return;
+    }
 
     let bestMove;
 
@@ -750,20 +799,36 @@ function computerMove() {
 
     }
 
-    isThinking = false;
-
     if (bestMove !== -1) {
 
+        isThinking = false;
+
         makeMove(bestMove);
+
+    }
+
+    else {
+
+        isThinking = false;
 
     }
 
 }
 
 
+// ==========================================
 // RESTART GAME
+// ==========================================
 
 function restartGame() {
+
+    if (computerTimer !== null) {
+
+        clearTimeout(computerTimer);
+
+        computerTimer = null;
+
+    }
 
     board = ["", "", "", "", "", "", "", "", ""];
 
@@ -775,7 +840,7 @@ function restartGame() {
 
     confettiContainer.innerHTML = "";
 
-    cells.forEach(cell => {
+    cells.forEach((cell, index) => {
 
         cell.textContent = "";
 
@@ -787,18 +852,26 @@ function restartGame() {
             "winner"
         );
 
+        cell.setAttribute(
+            "aria-label",
+            `Cell ${index + 1}`
+        );
+
     });
 
     roundNumber++;
 
     updateStatus();
 
-    gameMessage.textContent = "Make your move and win the battle!";
+    gameMessage.textContent =
+        "Make your move and win the battle!";
 
 }
 
 
+// ==========================================
 // CHANGE GAME MODE
+// ==========================================
 
 function changeMode(computerMode) {
 
@@ -853,7 +926,9 @@ function changeMode(computerMode) {
 }
 
 
+// ==========================================
 // CHANGE DIFFICULTY
+// ==========================================
 
 difficultyButtons.forEach(button => {
 
@@ -881,7 +956,9 @@ difficultyButtons.forEach(button => {
 });
 
 
+// ==========================================
 // CELL CLICK EVENTS
+// ==========================================
 
 cells.forEach(cell => {
 
@@ -896,7 +973,9 @@ cells.forEach(cell => {
 });
 
 
+// ==========================================
 // TWO PLAYER MODE
+// ==========================================
 
 twoPlayerBtn.addEventListener("click", () => {
 
@@ -907,7 +986,9 @@ twoPlayerBtn.addEventListener("click", () => {
 });
 
 
+// ==========================================
 // COMPUTER MODE
+// ==========================================
 
 computerBtn.addEventListener("click", () => {
 
@@ -918,7 +999,9 @@ computerBtn.addEventListener("click", () => {
 });
 
 
+// ==========================================
 // RESTART BUTTON
+// ==========================================
 
 restartBtn.addEventListener("click", () => {
 
@@ -927,7 +1010,9 @@ restartBtn.addEventListener("click", () => {
 });
 
 
+// ==========================================
 // RESET SCORES BUTTON
+// ==========================================
 
 resetScoreBtn.addEventListener("click", () => {
 
@@ -953,7 +1038,9 @@ resetScoreBtn.addEventListener("click", () => {
 });
 
 
+// ==========================================
 // SOUND BUTTON
+// ==========================================
 
 soundBtn.addEventListener("click", () => {
 
@@ -966,7 +1053,9 @@ soundBtn.addEventListener("click", () => {
 });
 
 
+// ==========================================
 // INITIALIZE GAME
+// ==========================================
 
 roundNumber = 0;
 

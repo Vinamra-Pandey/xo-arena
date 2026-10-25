@@ -18,8 +18,13 @@
     --muted: #a7abc0;
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
     min-height: 100vh;
+    min-height: 100svh;
     font-family: 'Outfit', sans-serif;
     background:
         radial-gradient(circle at 15% 15%, #252044 0%, transparent 35%),
@@ -31,6 +36,7 @@ body {
 
 button {
     font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* MAIN CONTAINER */
@@ -39,10 +45,12 @@ button {
     width: 100%;
     max-width: 1150px;
     min-height: calc(100vh - 32px);
+    min-height: calc(100svh - 32px);
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 10px;
 }
 
 /* HEADER */
@@ -51,7 +59,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 0 14px;
+    padding: 4px 0 10px;
 }
 
 .logo {
@@ -99,7 +107,7 @@ button {
     grid-template-columns: 1.1fr 1fr 1.4fr;
     gap: 15px;
     align-items: end;
-    margin: 12px 0 18px;
+    margin: 5px 0 12px;
 }
 
 .section-label {
@@ -120,6 +128,7 @@ button {
 
 .mode-btn {
     flex: 1;
+    min-width: 0;
     padding: 11px 7px;
     background: var(--panel);
     border: 1px solid var(--border);
@@ -128,7 +137,7 @@ button {
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.25s;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .mode-btn:hover,
@@ -147,6 +156,7 @@ button {
 
 .difficulty-section {
     display: none;
+    min-width: 0;
 }
 
 .difficulty-section.visible {
@@ -155,6 +165,7 @@ button {
 
 .difficulty-btn {
     flex: 1;
+    min-width: 0;
     padding: 11px 5px;
     background: var(--panel);
     border: 1px solid var(--border);
@@ -163,7 +174,7 @@ button {
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.25s;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .difficulty-btn.active {
@@ -176,11 +187,12 @@ button {
 
 .scoreboard {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
 }
 
 .score-card {
+    min-width: 0;
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 11px;
@@ -212,6 +224,7 @@ button {
     font-size: 8px;
     letter-spacing: 1px;
     color: #8c91aa;
+    text-align: center;
 }
 
 .score {
@@ -233,6 +246,7 @@ button {
 
 .board-panel,
 .info-panel {
+    min-width: 0;
     background: rgba(21, 24, 39, 0.96);
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -286,6 +300,7 @@ button {
 }
 
 .status-indicator {
+    flex-shrink: 0;
     width: 8px;
     height: 8px;
     background: var(--blue);
@@ -304,33 +319,61 @@ button {
     font-size: 14px;
     color: #e0e2ef;
     font-weight: 600;
+    text-align: center;
 }
 
 /* GAME BOARD */
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    /* Three exactly equal columns and rows */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+
     gap: 9px;
     width: min(100%, 390px);
     aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    align-content: stretch;
 }
 
 .cell {
+    width: 100%;
+    height: 100%;
     min-width: 0;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+
+    display: grid;
+    place-items: center;
+
     background: #20243a;
     border: 1px solid #343a56;
     border-radius: 13px;
+
     font-size: clamp(35px, 5vw, 65px);
+    line-height: 1;
     font-weight: 800;
+
     cursor: pointer;
-    transition: 0.2s;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+    /* Prevent cell size changes caused by content */
+    overflow: hidden;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .cell:hover:not(:disabled) {
     background: #2b3050;
     border-color: var(--purple);
-    transform: scale(1.025);
+}
+
+.cell:focus-visible {
+    outline: 2px solid var(--purple);
+    outline-offset: 2px;
 }
 
 .cell:disabled {
@@ -366,11 +409,13 @@ button {
 /* GAME MESSAGE */
 
 .game-message {
+    width: 100%;
     text-align: center;
     margin-top: 14px;
     min-height: 20px;
     font-size: 12px;
     color: var(--muted);
+    line-height: 1.4;
 }
 
 /* INFORMATION PANEL */
@@ -386,6 +431,7 @@ button {
 }
 
 .info-card {
+    min-width: 0;
     background: var(--card);
     border: 1px solid #30354d;
     border-radius: 11px;
@@ -424,6 +470,7 @@ button {
 .turn-symbol {
     width: 43px;
     height: 43px;
+    flex-shrink: 0;
     display: grid;
     place-items: center;
     background: #25334a;
@@ -453,6 +500,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 8px;
     padding: 5px 0;
     border-bottom: 1px solid #30354d;
     font-size: 11px;
@@ -469,6 +517,7 @@ button {
 .detail-row strong {
     color: white;
     font-size: 11px;
+    text-align: right;
 }
 
 /* RULES */
@@ -510,7 +559,7 @@ button {
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.25s;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .restart-btn {
@@ -584,7 +633,7 @@ button {
 footer {
     display: flex;
     justify-content: space-between;
-    padding-top: 12px;
+    padding-top: 10px;
     color: #626982;
     font-size: 9px;
     letter-spacing: 1.5px;
@@ -603,11 +652,11 @@ footer span {
     }
 
     .game-container {
-        min-height: calc(100vh - 20px);
+        min-height: calc(100svh - 20px);
     }
 
     .header {
-        padding-bottom: 5px;
+        padding-bottom: 4px;
     }
 
     .logo {
@@ -615,7 +664,7 @@ footer span {
     }
 
     .top-section {
-        margin: 6px 0 10px;
+        margin: 4px 0 8px;
     }
 
     .board-panel,
@@ -652,9 +701,9 @@ footer span {
     }
 }
 
-/* TABLET AND MOBILE */
+/* TABLET */
 
-@media (max-width: 700px) {
+@media (min-width: 501px) and (max-width: 700px) {
 
     body {
         padding: 14px;
@@ -662,7 +711,7 @@ footer span {
 
     .game-container {
         min-height: auto;
-        gap: 15px;
+        gap: 14px;
     }
 
     .top-section {
@@ -675,6 +724,7 @@ footer span {
 
     .main-layout {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .board-panel {
@@ -686,47 +736,426 @@ footer span {
     }
 
     .info-panel {
-        gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .info-heading,
+    .game-actions,
+    .sound-btn {
+        grid-column: 1 / -1;
     }
 
     footer {
         margin-top: 4px;
     }
-
 }
 
-/* VERY SMALL MOBILE */
+/* MOBILE */
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
+
+    body {
+        padding:
+            max(7px, env(safe-area-inset-top))
+            max(10px, env(safe-area-inset-right))
+            max(7px, env(safe-area-inset-bottom))
+            max(10px, env(safe-area-inset-left));
+    }
+
+    .game-container {
+        width: 100%;
+        min-height: calc(100svh - 14px);
+        gap: 7px;
+        justify-content: flex-start;
+    }
+
+    /* COMPACT HEADER */
+
+    .header {
+        padding: 0 1px 4px;
+    }
 
     .logo {
-        font-size: 25px;
+        font-size: 23px;
+        letter-spacing: 2px;
     }
 
     .subtitle {
-        font-size: 8px;
+        font-size: 7px;
         letter-spacing: 1px;
+        margin-top: 2px;
     }
 
     .header-tag {
+        gap: 5px;
         font-size: 8px;
-        padding: 7px;
+        padding: 6px 8px;
+        letter-spacing: 0.8px;
     }
+
+    .online-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* TOP CONTROLS */
 
     .top-section {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 7px;
+        align-items: end;
+        margin: 2px 0 4px;
     }
 
-    .scoreboard {
-        grid-column: auto;
+    .section-label {
+        font-size: 8px;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+    }
+
+    .mode-buttons,
+    .difficulty-buttons {
+        gap: 4px;
     }
 
     .mode-btn {
-        font-size: 11px;
+        padding: 8px 3px;
+        border-radius: 7px;
+        font-size: 10px;
+        line-height: 1.2;
     }
 
     .difficulty-btn {
+        padding: 8px 2px;
+        border-radius: 7px;
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+    .scoreboard {
+        grid-column: 1 / -1;
+        gap: 6px;
+    }
+
+    .score-card {
+        padding: 5px 3px;
+        border-radius: 8px;
+        gap: 0;
+    }
+
+    .player-symbol {
+        font-size: 15px;
+    }
+
+    .player-name {
+        font-size: 7px;
+        letter-spacing: 0.5px;
+    }
+
+    .score {
+        font-size: 17px;
+    }
+
+    /* GAME AREA */
+
+    .main-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 7px;
+        flex: 0 0 auto;
+    }
+
+    .board-panel {
+        padding: 10px 12px;
+        border-radius: 13px;
+    }
+
+    .panel-heading {
+        margin-bottom: 5px;
+    }
+
+    .panel-heading h2,
+    .info-heading h2 {
+        font-size: 14px;
+    }
+
+    .round-label {
+        font-size: 8px;
+        padding: 5px 7px;
+    }
+
+    .game-info {
+        gap: 6px;
+        margin-bottom: 7px;
+    }
+
+    .status-indicator {
+        width: 6px;
+        height: 6px;
+    }
+
+    #gameStatus {
+        font-size: 11px;
+    }
+
+    /* FIXED SQUARE BOARD */
+
+    .game-board {
+        width: min(100%, 330px, 39svh);
+        max-width: 330px;
+        aspect-ratio: 1 / 1;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .cell {
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        aspect-ratio: 1 / 1;
+        border-radius: 9px;
+        font-size: clamp(35px, 12vw, 53px);
+        line-height: 1;
+    }
+
+    .cell.winner {
+        animation-duration: 0.9s;
+    }
+
+    .game-message {
+        margin-top: 7px;
+        min-height: 16px;
+        font-size: 10px;
+        line-height: 1.3;
+    }
+
+    /* COMPACT INFORMATION AREA */
+
+    .info-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        padding: 8px;
+        border-radius: 12px;
+    }
+
+    .info-heading {
+        grid-column: 1 / -1;
+        margin: 0;
+    }
+
+    .info-heading .section-label {
+        margin-bottom: 1px;
+    }
+
+    .info-heading h2 {
+        font-size: 13px;
+    }
+
+    .info-card {
+        padding: 7px;
+        border-radius: 8px;
+    }
+
+    .info-label {
+        font-size: 7px;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+    }
+
+    .info-card h3 {
+        font-size: 12px;
+        margin-bottom: 2px;
+    }
+
+    .info-description,
+    .rules-card p {
+        font-size: 9px;
+        line-height: 1.3;
+    }
+
+    .turn-content {
+        gap: 7px;
+    }
+
+    .turn-symbol {
+        width: 31px;
+        height: 31px;
+        border-radius: 7px;
+        font-size: 17px;
+    }
+
+    .turn-content h3 {
+        font-size: 11px;
+    }
+
+    .turn-content p {
+        font-size: 8px;
+        line-height: 1.2;
+    }
+
+    .detail-row {
+        padding: 3px 0;
+        font-size: 9px;
+        gap: 3px;
+    }
+
+    .detail-row strong {
+        font-size: 9px;
+    }
+
+    .symbol-guide {
+        gap: 6px;
+        font-size: 9px;
+    }
+
+    .guide-x,
+    .guide-o {
+        font-size: 14px;
+    }
+
+    /* KEEP ALL INFORMATION COMPACT */
+
+    .rules-card {
+        display: none;
+    }
+
+    .game-actions {
+        grid-column: 1 / -1;
+        gap: 6px;
+    }
+
+    .restart-btn,
+    .reset-btn,
+    .sound-btn {
+        min-height: 34px;
+        padding: 7px 5px;
+        border-radius: 7px;
         font-size: 10px;
     }
 
+    .sound-btn {
+        grid-column: 1 / -1;
+    }
+
+    /* FOOTER */
+
+    footer {
+        padding: 3px 2px 0;
+        margin-top: auto;
+        font-size: 7px;
+        letter-spacing: 0.7px;
+    }
+}
+
+/* EXTRA SMALL PHONES */
+
+@media (max-width: 360px) {
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .header-tag {
+        font-size: 7px;
+        padding: 5px 6px;
+    }
+
+    .mode-btn {
+        font-size: 9px;
+    }
+
+    .difficulty-btn {
+        font-size: 8px;
+    }
+
+    .game-board {
+        width: min(100%, 300px, 36svh);
+        gap: 5px;
+    }
+
+    .cell {
+        font-size: clamp(32px, 11vw, 43px);
+    }
+
+    .info-panel {
+        padding: 6px;
+        gap: 5px;
+    }
+}
+
+/* SHORT MOBILE SCREENS */
+
+@media (max-width: 500px) and (max-height: 720px) {
+
+    .game-container {
+        gap: 4px;
+    }
+
+    .header {
+        padding-bottom: 2px;
+    }
+
+    .top-section {
+        margin: 1px 0 2px;
+        gap: 5px;
+    }
+
+    .board-panel {
+        padding: 7px 10px;
+    }
+
+    .panel-heading {
+        margin-bottom: 3px;
+    }
+
+    .game-info {
+        margin-bottom: 4px;
+    }
+
+    .game-board {
+        width: min(100%, 300px, 34svh);
+        gap: 5px;
+    }
+
+    .game-message {
+        margin-top: 4px;
+    }
+
+    .info-panel {
+        padding: 6px;
+        gap: 4px;
+    }
+
+    .info-card {
+        padding: 5px 6px;
+    }
+
+    .restart-btn,
+    .reset-btn,
+    .sound-btn {
+        min-height: 30px;
+        padding: 5px;
+    }
+
+    footer {
+        padding-top: 1px;
+    }
+}
+
+/* REDUCED MOTION ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
