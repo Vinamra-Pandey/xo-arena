@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XO Arena | Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="game-container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div>
+                <div class="logo">XO<span>ARENA</span></div>
+                <p class="subtitle">THE CLASSIC GAME. A NEW EXPERIENCE.</p>
+            </div>
+
+            <div class="header-tag">
+                <span class="online-dot"></span>
+                GAME ROOM
+            </div>
+        </header>
+
+
+        <!-- TOP CONTROLS -->
+        <section class="top-section">
+
+            <div class="mode-section">
+                <p class="section-label">GAME MODE</p>
+
+                <div class="mode-buttons">
+                    <button class="mode-btn active" id="twoPlayerBtn">
+                        👥 Two Players
+                    </button>
+
+                    <button class="mode-btn" id="computerBtn">
+                        🤖 Vs Computer
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="difficulty-section" id="difficultySection">
+
+                <p class="section-label">AI DIFFICULTY</p>
+
+                <div class="difficulty-buttons">
+
+                    <button class="difficulty-btn active" data-level="easy">
+                        Easy
+                    </button>
+
+                    <button class="difficulty-btn" data-level="medium">
+                        Medium
+                    </button>
+
+                    <button class="difficulty-btn" data-level="impossible">
+                        Impossible
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SCOREBOARD -->
+            <div class="scoreboard">
+
+                <div class="score-card x-card">
+                    <span class="player-symbol">X</span>
+                    <span class="player-name" id="playerXName">PLAYER X</span>
+                    <span class="score" id="scoreX">0</span>
+                </div>
+
+                <div class="score-card draw-card">
+                    <span class="player-symbol">=</span>
+                    <span class="player-name">DRAWS</span>
+                    <span class="score" id="scoreDraw">0</span>
+                </div>
+
+                <div class="score-card o-card">
+                    <span class="player-symbol">O</span>
+                    <span class="player-name" id="playerOName">PLAYER O</span>
+                    <span class="score" id="scoreO">0</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAIN GAME AREA -->
+        <section class="main-layout">
+
+
+            <!-- LEFT: GAME BOARD -->
+            <div class="board-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <p class="section-label">YOUR BATTLEFIELD</p>
+                        <h2>Game Board</h2>
+                    </div>
+
+                    <span class="round-label" id="roundLabel">
+                        ROUND 01
+                    </span>
+                </div>
+
+
+                <div class="game-info">
+                    <div class="status-indicator"></div>
+                    <p id="gameStatus">Player X's Turn</p>
+                </div>
+
+
+                <div class="game-board" id="gameBoard">
+
+                    <button class="cell" data-index="0" aria-label="Cell 1"></button>
+                    <button class="cell" data-index="1" aria-label="Cell 2"></button>
+                    <button class="cell" data-index="2" aria-label="Cell 3"></button>
+
+                    <button class="cell" data-index="3" aria-label="Cell 4"></button>
+                    <button class="cell" data-index="4" aria-label="Cell 5"></button>
+                    <button class="cell" data-index="5" aria-label="Cell 6"></button>
+
+                    <button class="cell" data-index="6" aria-label="Cell 7"></button>
+                    <button class="cell" data-index="7" aria-label="Cell 8"></button>
+                    <button class="cell" data-index="8" aria-label="Cell 9"></button>
+
+                </div>
+
+
+                <div class="game-message" id="gameMessage">
+                    Make your move and win the battle!
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT: GAME INFORMATION -->
+            <aside class="info-panel">
+
+                <div class="info-heading">
+                    <p class="section-label">GAME CENTER</p>
+                    <h2>Match Information</h2>
+                </div>
+
+
+                <!-- CURRENT TURN -->
+                <div class="info-card turn-card">
+
+                    <span class="info-label">CURRENT TURN</span>
+
+                    <div class="turn-content">
+                        <div class="turn-symbol" id="turnSymbol">X</div>
+
+                        <div>
+                            <h3 id="turnName">Player X</h3>
+                            <p id="turnDescription">Waiting for your move</p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- RESULT -->
+                <div class="info-card">
+
+                    <span class="info-label">LAST RESULT</span>
+
+                    <h3 id="resultInfo">No result yet</h3>
+
+                    <p class="info-description" id="resultDescription">
+                        Complete a match to see its result here.
+                    </p>
+
+                </div>
+
+
+                <!-- MATCH DETAILS -->
+                <div class="info-card">
+
+                    <span class="info-label">MATCH DETAILS</span>
+
+                    <div class="detail-row">
+                        <span>Game Mode</span>
+                        <strong id="modeInfo">Two Players</strong>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Difficulty</span>
+                        <strong id="difficultyInfo">Not applicable</strong>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Moves Played</span>
+                        <strong id="movesInfo">0 / 9</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- HOW TO PLAY -->
+                <div class="info-card rules-card">
+
+                    <span class="info-label">HOW TO PLAY</span>
+
+                    <p>
+                        Get three of your symbols in a row,
+                        column or diagonal to win.
+                    </p>
+
+                    <div class="symbol-guide">
+                        <span class="guide-x">X</span>
+                        <span>vs</span>
+                        <span class="guide-o">O</span>
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="game-actions">
+
+                    <button class="restart-btn" id="restartBtn">
+                        ↻ Restart Game
+                    </button>
+
+                    <button class="reset-btn" id="resetScoreBtn">
+                        Reset Scores
+                    </button>
+
+                </div>
+
+
+                <button class="sound-btn" id="soundBtn">
+                    🔊 Sound On
+                </button>
+
+            </aside>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+            <p>MADE WITH <span>♥</span> FOR GAME LOVERS</p>
+            <p>XO ARENA © 2026</p>
+        </footer>
+
+    </main>
+
+
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
